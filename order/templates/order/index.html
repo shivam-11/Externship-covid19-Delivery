@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
+  <title>Accepting Order</title>
+  <style>
+    .divclass {
+      height: 580px;
+      width: 1380px;
+      background-color: white;
+      border: solid 2px green;
+
+      padding: 10px;
+    }
+
+    .left {
+      width: 600px;
+      float: left;
+      height: 610;
+      background-color: black;
+      padding: 5px;
+
+    }
+
+    .right {
+
+      width: 750px;
+      float: right;
+      height: 610;
+      background-color: green;
+    }
+
+    #map {
+
+      width: 750px;
+      height: 500px;
+    }
+
+    .status {
+
+      width: 750px;
+      height: 100;
+
+
+      background-color: black;
+    }
+
+    .left-status {
+      width: 400px;
+      float: left;
+      padding: 5px;
+      background-color: black;
+
+
+    }
+
+    .right-status {
+      width: 349px;
+      float: right;
+      padding: 10px;
+      height: 63.5px;
+      background-color: black;
+
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <a class="navbar-brand" href="#">
+      <font size=5 color="MediumSeaGreen"><b>Grocery</b></font>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/order">
+            <font size=3 color="white">Home </font><span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/order/analyse">
+            <font size=3 color="white">Summary
+          </a>
+        </li>
+
+
+      </ul>
+      <form action="/order/analyse/" method="post" class="form-inline my-2 my-lg-0">{% csrf_token %}
+        <input class="form-control mr-sm-2" type="date" placeholder="Date" aria-label="Search" name="date">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+
+  <div class="divclass">
+    <div class="left">
+      <form action="/order/" , method="post">{% csrf_token %}
+        <div class="form-group">
+          <label for="exampleInputEmail1">Name</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" name='name' placeholder="Enter Your Name">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Address</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" name='address'
+            placeholder="Enter Your Address">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Contact Number</label>
+          <input type="text" class="form-control" id="exampleInputEmail1" name='contact'
+            placeholder="Enter Your Contact Number">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Rice in Kg</label>
+          <input type="text" class="form-control" name='rice' placeholder="How much Rice you want!!">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Pulse in Kg</label>
+          <input type="text" class="form-control" name='pulse' placeholder="How much Pulse you want!!">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Salt in Kg</label>
+          <input type="text" class="form-control" name='salt' placeholder="How much Salt you want!!">
+        </div>
+        <div style="text-align:center;">
+          <button type="submit" class="btn btn-outline-success " align="center">
+            <fornt color="green">Order!!
+          </button>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="right">
+      <div id='map'> </div>
+
+      <div class="status">
+        <div class="left-status">
+          <form class="form-inline" action="/order/" , method="post">{% csrf_token %}
+            <div class="form-group mx-sm-3 mb-2 py-1">
+              <input type="text" class="form-control" id="inputPassword2" placeholder="state">
+            </div>
+            <button type="submit" class="btn btn-outline-success mb-2 ">Check</button>
+
+          </form>
+        </div>
+
+
+        <div class="right-status">
+          <p align="center">
+            <font size=6 color="red" align="center py-1" face="sans-serif"> Red Zone</font>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+
+</body>
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js"></script>
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2hpdmFtMTIiLCJhIjoiY2tjaHE5b2FlMDdkbzJzcDVmZ2N5anZ3eSJ9.QFXyEegbx6aKOIxFRCWRCA';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v10',
+    zoom: 1,
+    center: [0, 20]
+  });
+</script>
+
+<script>
+  function updateMap() {
+    console.log("Updating map with realtime data")
+    fetch("/media/data.json")
+      .then(response => response.json())
+      .then(rsp => {
+        // console.log(rsp.data)
+        rsp.data.forEach(element => {
+          latitude = element.latitude;
+          longitude = element.longitude;
+
+          cases = element.infected;
+          if (cases > 255) {
+            color = "rgb(255, 0, 0)";
+          }
+
+          else {
+            color = `rgb(${cases}, 0, 0)`;
+          }
+
+          // Mark on the map
+          new mapboxgl.Marker({
+            draggable: false,
+            color: color
+          }).setLngLat([longitude, latitude])
+            .addTo(map);
+        });
+      })
+  }
+
+  let interval = 20000;
+  setInterval(updateMap, interval); 
+</script>
+
+</html>
